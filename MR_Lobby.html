@@ -18,7 +18,11 @@
 
       --shadow: 0 18px 60px rgba(0,0,0,0.65);
 
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-family: "NanumHumanHeavy";
+      src: url("https://raw.githubusercontent.com/Yuhisa-Kr/WebCardGame/main/NanumHumanHeavy.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
     }
 
     *{ box-sizing:border-box; }
@@ -219,6 +223,27 @@
     .rankRow .name{ color: rgba(255,255,255,0.92); font-weight: 1000; }
     .rankRow .score{ text-align:right; color: rgba(255,255,255,0.90); font-weight: 1100; }
 
+    /* ===== 만든 사람 모달 내용 ===== */
+    .creatorBrand{
+      margin: 4px 0 10px;
+      font-size: 18px;      /* ✅ 다른 텍스트보다 조금 크게 */
+      font-weight: 1100;
+      letter-spacing: 0.3px;
+      color: rgba(255,255,255,0.92);
+    }
+    .creatorLink{
+      display:inline-block;
+      color: rgba(195,169,224,0.95);
+      text-decoration: none;
+      font-weight: 1000;
+      border-bottom: 1px solid rgba(195,169,224,0.45);
+      padding-bottom: 1px;
+    }
+    .creatorLink:hover{
+      filter: brightness(1.08);
+      border-bottom-color: rgba(195,169,224,0.80);
+    }
+
     /* Scrollbar (modal) */
     .modalBody::-webkit-scrollbar{ width: 10px; }
     .modalBody::-webkit-scrollbar-thumb{
@@ -251,6 +276,8 @@
         <button id="btnStart">게임 시작</button>
         <button id="btnGuide" class="ghost">게임 가이드</button>
         <button id="btnRanking" class="ghost">랭킹</button>
+        <!-- ✅ 추가 버튼 -->
+        <button id="btnCreator" class="ghost">만든 사람</button>
       </div>
     </div>
   </div>
@@ -336,16 +363,39 @@
     </div>
   </div>
 
+  <!-- ✅ Creator Modal -->
+  <div class="overlay" id="creatorOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHeader">
+        <div class="modalTitleCenter">만든 사람</div>
+      </div>
+
+      <div class="modalBody" style="text-align:center;">
+        <div class="creatorBrand" style="font-size:28px; font-weight:1100;">CREARIUM</div>
+        <a class="creatorLink" href="https://crearium-info.web.app/" target="_blank" rel="noopener noreferrer">
+          개발자 사이트
+        </a>
+      </div>
+
+      <div class="modalFooter">
+        <button class="closeBtn ghost" id="btnCreatorClose">닫기</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const btnStart = document.getElementById("btnStart");
     const btnGuide = document.getElementById("btnGuide");
     const btnRanking = document.getElementById("btnRanking");
+    const btnCreator = document.getElementById("btnCreator");
 
     const guideOverlay = document.getElementById("guideOverlay");
     const rankingOverlay = document.getElementById("rankingOverlay");
+    const creatorOverlay = document.getElementById("creatorOverlay");
 
     const btnGuideClose = document.getElementById("btnGuideClose");
     const btnRankingClose = document.getElementById("btnRankingClose");
+    const btnCreatorClose = document.getElementById("btnCreatorClose");
 
     btnStart.addEventListener("click", () => {
       window.location.href = "MR_Playground.html";
@@ -361,6 +411,11 @@
       rankingOverlay.setAttribute("aria-hidden", "false");
     });
 
+    btnCreator.addEventListener("click", () => {
+      creatorOverlay.classList.add("open");
+      creatorOverlay.setAttribute("aria-hidden", "false");
+    });
+
     function closeOverlay(overlay){
       overlay.classList.remove("open");
       overlay.setAttribute("aria-hidden", "true");
@@ -368,6 +423,7 @@
 
     btnGuideClose.addEventListener("click", () => closeOverlay(guideOverlay));
     btnRankingClose.addEventListener("click", () => closeOverlay(rankingOverlay));
+    btnCreatorClose.addEventListener("click", () => closeOverlay(creatorOverlay));
 
     guideOverlay.addEventListener("click", (e) => {
       if (e.target === guideOverlay) closeOverlay(guideOverlay);
@@ -375,11 +431,15 @@
     rankingOverlay.addEventListener("click", (e) => {
       if (e.target === rankingOverlay) closeOverlay(rankingOverlay);
     });
+    creatorOverlay.addEventListener("click", (e) => {
+      if (e.target === creatorOverlay) closeOverlay(creatorOverlay);
+    });
 
     window.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       if (guideOverlay.classList.contains("open")) closeOverlay(guideOverlay);
       if (rankingOverlay.classList.contains("open")) closeOverlay(rankingOverlay);
+      if (creatorOverlay.classList.contains("open")) closeOverlay(creatorOverlay);
     });
   </script>
 </body>
